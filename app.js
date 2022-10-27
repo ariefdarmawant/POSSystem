@@ -37,12 +37,25 @@ function initial() {
     type: "income",
     userId: 1,
   })
+  Transaction.create({
+    amount: 10000,
+    notes: "Ini transaksi 2",
+    date: new Date().setDate(new Date().getDate() + 2),
+    type: "expense",
+    userId: 1,
+  })
+  Transaction.create({
+    amount: 15000,
+    notes: "Ini transaksi 3",
+    date: new Date().setDate(new Date().getDate() + 4),
+    type: "expense",
+    userId: 1,
+  })
 }
 
-db.sequelize.sync({ force: true }).then(() => {
-  console.log("Drop and Resync Db");
-  initial();
-});
+  db.sequelize.sync({ force: true }).then(() => {
+    console.log("Drop and Resync Db");
+  });
 
 const PORT = process.env.PORT || 3001;
 

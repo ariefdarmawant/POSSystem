@@ -11,12 +11,12 @@ module.exports = function (app) {
   });
 
   app.post(
-    "/auth/register",
+    "/register",
     verifyRegistration.checkDuplicateUsername,
     controller.register
   );
 
-  app.post("/auth/login", controller.login);
+  app.post("/login", controller.login);
 
-  app.post("/auth/refreshJwt", controller.refreshJwt);
+  app.post("/refreshJwt", controller.refreshJwt);
 };

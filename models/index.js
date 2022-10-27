@@ -31,7 +31,4 @@ db.user.hasOne(db.refreshJwt, {
   targetKey: "id",
 });
 
-// db.tweet.belongsTo(db.tweet, { as: "parent", onDelete: 'CASCADE' });
-// db.tweet.hasMany(db.tweet, { as: "children", foreignKey: 'parentId', useJunctionTable: false});
-
 module.exports = db;

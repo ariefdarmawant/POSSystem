@@ -28,8 +28,8 @@ exports.getTransactions = async ({ query }, res) => {
   const size = query.size || undefined;
   const maxAmount = query.maxAmount || undefined;
   const minAmount = query.minAmount || 0;
-  const sortDate = query.sortDate || undefined;
-  const sortAmount = query.sortAmount || undefined;
+  const sortBy = query.sortBy || undefined;
+  const sortType = query.sortType || "DESC";
 
   //bikin kondisi untuk where sesuai ada tidaknya filter type dan amount
   let whereQuery = {};
@@ -49,11 +49,17 @@ exports.getTransactions = async ({ query }, res) => {
   }
 
   let orderArr = [];
-  if (sortDate) {
-    orderArr = [...orderArr, ["date", sortDate === "ASC" ? "ASC" : "DESC"]];
+  if (sortBy) {
+    orderArr = [
+      [sortBy === "amount" ? "amount": "date", sortType.toUpperCase() === "DESC" ? "DESC" : "ASC"],
+    ];
   }
-  if (sortAmount) {
-    orderArr = [...orderArr, ["amount", sortAmount === "ASC" ? "ASC" : "DESC"]];
+
+  if(page < 1 || size < 1){
+    res.status(HTTP_STATUS.BAD_REQUEST).send({
+      message: `Invalid pagination value [page:${page},size:${size}]`
+    })
+    return
   }
 
   //ambil value limit dan offset untuk filter pada db
@@ -83,7 +89,7 @@ exports.getTransactions = async ({ query }, res) => {
 
 exports.getTransactionById = async (req, res) => {
   const [transactionData] = await Transaction.findAll({
-    include: { model: User, attributes: ["username"], as: "owner" },
+    include: { model: User, attributes: ["username"], as: "createdBy" },
     where: {
       id: req.params.id,
     },
@@ -96,7 +102,17 @@ exports.getTransactionById = async (req, res) => {
 };
 
 exports.updateTransaction = (req, res) => {
-  Transaction.update({ ...req.body }, { where: { id: req.params.id } })
+  const newAmount = req.body.amount || undefined;
+  const newNotes = req.body.notes || undefined;
+  const newDate = req.body.date || undefined;
+  const newType = req.body.type || undefined;
+  const updateObj = {
+    ...(newAmount && { amount: newAmount }),
+    ...(newNotes && { notes: newNotes }),
+    ...(newDate && { date: newDate }),
+    ...(newType && { type: newType }),
+  };
+  Transaction.update(updateObj, { where: { id: req.params.id } })
     .then(([found]) => {
       found
         ? res.status(HTTP_STATUS.OK).send({
