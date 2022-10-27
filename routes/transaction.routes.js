@@ -16,8 +16,8 @@ module.exports = function(app) {
   //size: valuenya berupa jumlah data yang ingin ditampilkan per halamannya
   //minAmount: valuenya berupa angka amount minimal yang ingin difilter ( value >= minAmount)
   //maxAmount: valuenya berupa angka amount maximal yang ingin difilter ( value <= maxAmount)
-  //sortDate: valuenya berupa "ASC"/"asc" untuk sort ascending dan "DESC"/"desc" untuk descending
-  //sortAmount: valuenya berupa "ASC"/"asc" untuk sort ascending dan "DESC"/"desc" untuk descending
+  //sortBy: valuenya berupa "date" atau "amount"
+  //sortType: valuenya berupa "DESC"/"desc" dan "ASC"/"asc"
   app.get("/transactions", auth.verifyToken, controller.getTransactions);
 
   app.get("/transactions/:id", auth.verifyToken, controller.getTransactionById);
