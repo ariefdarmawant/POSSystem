@@ -53,9 +53,10 @@ function initial() {
   });
 }
 
-db.sequelize.sync({ force: true }).then(() => {
-  console.log("Drop and Resync Db");
-});
+// db.sequelize.sync({ force: true }).then(() => {
+//   console.log("Drop and Resync Db");
+//   initial();
+// });
 
 const PORT = process.env.PORT || 3001;
 

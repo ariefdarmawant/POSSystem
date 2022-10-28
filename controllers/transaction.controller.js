@@ -54,14 +54,7 @@ exports.getTransactions = async ({ query }, res) => {
       [sortBy === "amount" ? "amount": "date", sortType.toUpperCase() === "DESC" ? "DESC" : "ASC"],
     ];
   }
-
-  if(page < 1 || size < 1){
-    res.status(HTTP_STATUS.BAD_REQUEST).send({
-      message: `Invalid pagination value [page:${page},size:${size}]`
-    })
-    return
-  }
-
+  
   //ambil value limit dan offset untuk filter pada db
   const { limit, offset } = getPaginationValue(page, size);
 
